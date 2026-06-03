@@ -1,16 +1,15 @@
 from astrbot.api.event import filter, AstrMessageEvent
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
+from astrbot.api import AstrBotConfig
 import random
 import astrbot.api.message_components as Comp
 
-imageURL = "imageURL"
-gesture = ["rockImageName", "scissorImageName", "paperImageName"]
-
 @register("石头剪刀布", "EndlessAttackUnderMoon", "随机发出一张石头、剪刀、布的图片。", "1.1")
 class PluginRockScissorPaper(Star):
-    def __init__(self, context: Context):
+    def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
+        self.config = config
 
     async def initialize(self):
         """可选择实现异步的插件初始化方法，当实例化该插件类之后会自动调用该方法。"""
@@ -24,8 +23,14 @@ class PluginRockScissorPaper(Star):
         message_chain = event.get_messages() # 用户所发的消息的消息链 # from astrbot.api.message_components import *
         logger.info(message_chain)
     
-        name = random.choice(gesture)
-        path = f"{imageURL}/{name}.png"
+        index = random.randint(0, 2)
+        path = ""
+        if index == 0:
+            path = self.config['rockImageUrl']
+        elif index == 1:
+            path = self.config['scissorImageUrl']
+        else:
+            path = self.config['paperImageUrl']
 
         chain = [
             Comp.Image.fromURL(path)

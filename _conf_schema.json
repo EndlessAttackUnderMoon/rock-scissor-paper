@@ -1,0 +1,14 @@
+{
+    "rockImageUrl": {
+        "description": "石头的图床地址",
+        "type": "string"
+    },
+    "scissorImageUrl": {
+        "description": "剪刀的图床地址",
+        "type": "string"
+    },
+    "paperImageUrl": {
+        "description": "布的图床地址",
+        "type": "string"
+    }
+}
